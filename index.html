@@ -5,105 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 心理测试</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 100px; background-color: black; color: white; }
-        button { padding: 10px 20px; font-size: 18px; cursor: pointer; margin: 10px; }
-        input, select { padding: 10px; font-size: 18px; width: 300px; margin: 10px; }
-        #test, #loading, #result { display: none; }
-        #loadingBar { width: 0%; height: 20px; background: limegreen; }
-        #loadingContainer { width: 300px; background: gray; margin: 20px auto; border-radius: 10px; }
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: grey;
+            display: none;
+        }
+        #progress {
+            width: 0%;
+            height: 100%;
+            background-color: lime;
+        }
+        #result {
+            display: none;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <h1>📊 AI 心理测试</h1>
+    <p>测试你的心理健康状况，让 AI 进行专业分析 🤖</p>
+    <button onclick="startTest()">开始测试</button>
 
-    <div id="start">
-        <h1>📊 AI 心理测试</h1>
-        <p>测试你的心理健康状况，让 AI 进行专业分析 🤖</p>
-        <button onclick="startTest()">开始测试</button>
-    </div>
-
-    <div id="test">
-        <h2>🧠 请选择你的心理状态：</h2>
-        <select id="question1">
-            <option value="1">最近有点焦虑</option>
-            <option value="2">有时候会不开心</option>
-            <option value="3">感觉压力有点大</option>
-            <option value="4">一切都很好！</option>
-        </select>
-        <h2>😴 你的睡眠状况如何？</h2>
-        <select id="question2">
-            <option value="1">失眠，睡不好</option>
-            <option value="2">偶尔会睡不着</option>
-            <option value="3">睡得不错</option>
-            <option value="4">每天精神满满！</option>
-        </select>
-        <h2>💭 你是否经常胡思乱想？</h2>
-        <select id="question3">
-            <option value="1">是的，经常想太多</option>
-            <option value="2">偶尔会胡思乱想</option>
-            <option value="3">不怎么会</option>
-            <option value="4">完全不会！</option>
-        </select>
-        <br>
-        <button onclick="submitTest()">提交答案</button>
-    </div>
-
-    <div id="loading">
-        <h2>🤖 AI 正在分析你的心理状态...</h2>
-        <div id="loadingContainer"><div id="loadingBar"></div></div>
+    <div id="progress-bar">
+        <div id="progress"></div>
     </div>
 
     <div id="result">
-        <h2>🔍 AI 分析结果：</h2>
-        <h1 id="analysisText"></h1>
-        <p>🔔 **建议：请尽快寻求医生帮助！**</p>
-        <button onclick="getDoctorAdvice()">获取医生建议 🏥</button>
+        <p>✅ AI 计算完成！</p>
+        <p id="prediction"></p>
+        <button onclick="revealTruth()">揭秘真相</button>
+        <button class="hidden" id="rickroll" onclick="rickRoll()">医生建议</button>
     </div>
 
-    <!-- 音效 -->
-    <audio id="beepSound" src="https://www.myinstants.com/media/sounds/beep.mp3"></audio>
+    <audio id="suspense-sound" src="https://www.fesliyanstudios.com/play-mp3/4382"></audio>
+    <audio id="scare-sound" src="https://www.fesliyanstudios.com/play-mp3/6661"></audio>
 
     <script>
-        function startTest() {
-            document.getElementById("start").style.display = "none";
-            document.getElementById("test").style.display = "block";
-        }
+        let clickCount = 0;
 
-        function submitTest() {
-            document.getElementById("test").style.display = "none";
-            document.getElementById("loading").style.display = "block";
-            document.getElementById("beepSound").play();
+        function startTest() {
+            document.querySelector("button").style.display = "none";
+            document.getElementById("progress-bar").style.display = "block";
+            document.getElementById("suspense-sound").play();
 
             let progress = 0;
             let interval = setInterval(() => {
                 progress += Math.random() * 10;
-                document.getElementById("loadingBar").style.width = progress + "%";
+                document.getElementById("progress").style.width = progress + "%";
                 if (progress >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => showResult(), 1000);
+                    showResult();
                 }
-            }, 300);
+            }, 500);
         }
 
         function showResult() {
-            document.getElementById("loading").style.display = "none";
+            document.getElementById("progress-bar").style.display = "none";
             document.getElementById("result").style.display = "block";
 
-            let messages = [
-                "你的焦虑指数超标！😨",
-                "你可能患有**严重精神问题** 😱",
-                "你的心理状态非常危险！⚠️",
-                "你需要立即就医！🏥",
-                "你可能有**99% 的精神异常** 🤯"
+            let predictions = [
+                "你是一个完美主义者，对吧？",
+                "你的直觉很强，但有时会犹豫！",
+                "你非常有创造力，喜欢尝试新事物！",
+                "你擅长分析问题，但有时会纠结！",
+                "你的内心隐藏着一个天才！"
             ];
-            let randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById("analysisText").innerText = randomMessage;
+            let randomIndex = Math.floor(Math.random() * predictions.length);
+            document.getElementById("prediction").innerText = predictions[randomIndex];
         }
 
-        function getDoctorAdvice() {
-            // Rickroll 自动跳转
-            window.location.href = "https://www.youtube.com/watch?v=2qBlE2-WL60&autoplay=1";
+        function revealTruth() {
+            clickCount++;
+            if (clickCount >= 3) {
+                document.getElementById("rickroll").classList.remove("hidden");
+                document.getElementById("prediction").innerText = "⚠️ 你的心理状态极度危险！请点击医生建议！";
+            } else if (clickCount === 5) {
+                document.getElementById("scare-sound").play();
+                alert("在再点就要爆炸了💥！");
+            } else {
+                alert("真相还未完全揭晓...");
+            }
+        }
+
+        function rickRoll() {
+            window.location.href = "https://youtu.be/uHgt8giw1LY?feature=shared";
         }
     </script>
-
 </body>
 </html>
