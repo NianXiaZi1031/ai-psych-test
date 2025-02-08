@@ -10,6 +10,7 @@
             color: white;
             text-align: center;
             font-family: Arial, sans-serif;
+            transition: background-color 0.5s;
         }
         #progress-bar {
             width: 100%;
@@ -44,6 +45,7 @@
     <div id="result">
         <p>✅ AI 计算完成！</p>
         <p id="prediction"></p>
+        <p id="psychology-analysis"></p>
         <button onclick="revealTruth()">揭秘真相</button>
         <button class="hidden" id="rickroll" onclick="rickRoll()">医生建议</button>
     </div>
@@ -83,23 +85,49 @@
             ];
             let randomIndex = Math.floor(Math.random() * predictions.length);
             document.getElementById("prediction").innerText = predictions[randomIndex];
+
+            let psychologyAnalysis = [
+                "你的大脑结构显示，你对复杂问题的理解能力超乎常人。",
+                "你的情绪控制能力强，但在高压下可能会出现波动。",
+                "你的性格偏向外向，但有时也喜欢独处思考。",
+                "你很可能擅长某种艺术创作，例如绘画或写作。",
+                "你的决策能力较强，但有时会过于谨慎。"
+            ];
+            let analysisIndex = Math.floor(Math.random() * psychologyAnalysis.length);
+            document.getElementById("psychology-analysis").innerText = psychologyAnalysis[analysisIndex];
         }
 
         function revealTruth() {
             clickCount++;
-            if (clickCount >= 3) {
+            if (clickCount === 1) {
+                alert("你确定你想知道真相吗？");
+            } else if (clickCount === 2) {
+                alert("我觉得你还是别看了...");
+            } else if (clickCount === 3) {
+                alert("真的要看？再考虑一下...");
+            } else if (clickCount === 4) {
+                alert("好吧……但你不会后悔吗？");
+            } else if (clickCount === 5) {
                 document.getElementById("rickroll").classList.remove("hidden");
                 document.getElementById("prediction").innerText = "⚠️ 你的心理状态极度危险！请点击医生建议！";
-            } else if (clickCount === 5) {
+            } else if (clickCount === 6) {
                 document.getElementById("scare-sound").play();
-                alert("在再点就要爆炸了💥！");
-            } else {
-                alert("真相还未完全揭晓...");
+                document.body.style.backgroundColor = "red";
+                setTimeout(() => document.body.style.backgroundColor = "black", 500);
+                alert("💀 你被骗了！赶快点击医生建议！");
             }
         }
 
         function rickRoll() {
-            window.location.href = "https://youtu.be/uHgt8giw1LY?feature=shared";
+            let confirmRickroll = confirm("你真的想知道医生建议吗？🤔");
+            if (confirmRickroll) {
+                document.body.style.backgroundColor = "red";
+                setTimeout(() => {
+                    window.location.href = "https://youtu.be/uHgt8giw1LY?feature=shared";
+                }, 1000);
+            } else {
+                alert("你做了个正确的决定！😂");
+            }
         }
     </script>
 </body>
